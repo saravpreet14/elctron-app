@@ -1,0 +1,12 @@
+appId: com.rickmorty.nextron
+productName: Rick and Morty
+copyright: Copyright © 2021 Sprinklr
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
