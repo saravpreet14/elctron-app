@@ -58,6 +58,8 @@ export default function Home() {
         ];
         return fetchMoreResult;
       },
+    }).catch(error => {
+        console.log(error);
     });
   }
 

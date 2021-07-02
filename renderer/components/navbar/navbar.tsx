@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { CssBaseline, AppBar, Toolbar } from "@material-ui/core";
 
 export default function navbar(props) {
-    const Router = useRouter();
+  const Router = useRouter();
+
   return (
     <>
       <CssBaseline />
@@ -12,8 +13,8 @@ export default function navbar(props) {
           <h1
             className={styles.siteName}
             onClick={() => {
-            //   if(Router.pathname === "/home") Router.reload(); else 
-              Router.push("/home");
+              if(Router.pathname === "/home") Router.reload();
+              else Router.push("/home");
             }}
           >
             Rick and Morty

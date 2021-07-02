@@ -80,5 +80,7 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
 
   win.on('close', saveState);
 
+  // win.webContents.on('did-fail-load', () => win.loadURL());
+
   return win;
 };
