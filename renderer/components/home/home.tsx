@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import { useQuery, gql } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SearchBar from "../searchBar/searchBar";
 import CharacterList from "../characterList/characterList";
 import { Button } from "@material-ui/core";
@@ -15,7 +15,7 @@ interface characterData {
 }
 
 var isSearch:boolean = false;
-var my_filter:string = "";
+var static_filter:string = "";
 
 export default function Home() {
   const Characters_data = gql`
@@ -34,12 +34,14 @@ export default function Home() {
     }
   `;
 
+  const [my_filter, set_filter] = useState(static_filter);
+
   const { loading, error, data, fetchMore } = useQuery(Characters_data, {
     variables: { page: 1, filter: {} },
     errorPolicy: "ignore",
   });
   if (loading) return <Spinner />;
-  if (error) return <Error />;
+  if (error) return <Error reload={() => search(my_filter)} />;
 
   function loadMore(isSearch:boolean, my_filter:string) {
     const nextPage = data.characters.info.next;
@@ -58,22 +60,20 @@ export default function Home() {
         ];
         return fetchMoreResult;
       },
-    }).catch(error => {
-        console.log(error);
-    });
+    }).catch(error => null);
   }
 
-  function search(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
+  function search(query: string): void {
     isSearch = true;
-    my_filter = event.target[0].value;
+    set_filter(query);
+    static_filter = query;
 
     fetchMore({
-      variables: { page: null, filter: { name: my_filter } },
+      variables: { page: null, filter: { name: query } },
       updateQuery: (prevResult, { fetchMoreResult }) => {
         return fetchMoreResult;
       },
-    });
+    }).catch(error => null)
   }
 
   const results: characterData[] = data.characters ? data.characters.results : [];
@@ -92,7 +92,7 @@ export default function Home() {
       <br />
       <br />
       <br />
-      <SearchBar search={(event: React.FormEvent<HTMLFormElement>) => search(event)} value={my_filter} />
+      <SearchBar search={(event: React.FormEvent<HTMLFormElement>) => {event.preventDefault(); search(event.target[0].value)}} value={my_filter} />
       <CharacterList characters={results} />
       <div className={styles.loadMore}>
         {info.next ? (
@@ -109,3 +109,11 @@ export default function Home() {
     </>
   );
 }
+
+// function usePrevious(value) {
+//   const ref = useRef();
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// }

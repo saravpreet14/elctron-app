@@ -35,7 +35,7 @@ function Link(props: LinkProps) {
   } = props;
 
   const router = useRouter();
-  const pathname:string = href; //typeof href === 'string' ? href : href.pathname;
+  const pathname = href; //typeof href === 'string' ? href : href.pathname;
   const className = clsx(classNameProps, {
     [activeClassName]: router.pathname === pathname && activeClassName,
   });
@@ -49,4 +49,4 @@ function Link(props: LinkProps) {
   );
 }
 
-export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => <Link {...props} innerRef={ref} />);
+export default React.forwardRef<HTMLAnchorElement, LinkProps>(function link(props, ref) { return <Link {...props} innerRef={ref} /> });

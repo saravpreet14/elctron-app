@@ -53,12 +53,20 @@ export default function MyCharacter(props: {
       }
     }
   `;
-  const responseData: dataFromApi = useQuery(Character_data, {
+  const responseData = useQuery(Character_data, {
     variables: { ids: id },
   });
-  const { loading, error, data } = responseData;
+  const { loading, error, data, fetchMore } = responseData;
+  function reload() {
+    fetchMore({
+      variables: {ids: id},
+      updateQuery: () => (prevResult, { fetchMoreResult }) => {
+        return fetchMoreResult;
+      }
+    }).catch(error => null);
+  }
   if (loading) return <Spinner />;
-  if (error) return <Error />;
+  if (error) return <Error reload={() => reload()}/>;
 
   const { name, image, gender, location, origin, species, status } = data.charactersByIds[0];
   return (

@@ -22,6 +22,7 @@ export default function SearchBar(props : {
     search: (event:React.FormEvent<HTMLFormElement>) => void;
     value: string;
 }) {
+  console.log(props);
   const classes = styles();
 
     const [value, setValue] = useState(props.value);
