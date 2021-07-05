@@ -10,3 +10,8 @@
 .marginTop {
     margin-top: 100px;
 }
+
+.heading {
+    font-family: "Kaushan Script";
+    font-size: 2.5rem;
+}

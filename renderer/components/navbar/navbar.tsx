@@ -1,9 +1,16 @@
 import styles from "./navbar.module.css";
 import { useRouter } from "next/router";
+import { useState } from 'react';
 import { CssBaseline, AppBar, Toolbar } from "@material-ui/core";
+import { isAuth, logout } from '../../lib/auth';
 
 export default function navbar(props) {
   const Router = useRouter();
+  const [auth, setAuth] = useState(false); 
+  isAuth().then(isValid => {
+    if(isValid) setAuth(true);
+    else if(Router.pathname !== '/auth') Router.push('/auth');
+  });
 
   return (
     <>
@@ -19,23 +26,13 @@ export default function navbar(props) {
           >
             Rick and Morty
           </h1>
-          {/* <h1 className={styles.authButton}>
-            {props.isAuth ? "Logout" : "Sign In"}
-          </h1> */}
+          <h1 className={styles.authButton} onClick={() => auth ? logout().then(() => Router.push('/auth')) : Router.push('/auth')} >
+            {auth ? "Logout" : "Sign In"}
+          </h1>
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
-      {/* {props.isAuth ? (
-        props.children
-      ) : (
-        <>
-          <br />
-          <br />
-          <br />
-          <h1 className={styles.signInMessage}>Sign In to continue</h1>
-        </>
-      )} */}
-      {props.children}
+      {auth ? props.children : null}
     </>
   );
 }
