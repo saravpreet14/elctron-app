@@ -28,7 +28,6 @@ export default function Home() {
         results {
           id
           name
-          image
         }
       }
     }

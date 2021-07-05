@@ -59,7 +59,7 @@ export default function TitlebarGridList(props : {
                 <img
                   width="300"
                   height="300"
-                  src={character.image}
+                  src={`https://rickandmortyapi.com/api/character/avatar/${character.id}.jpeg`}
                   alt={character.name}
                 />
                 <GridListTileBar title={character.name} />
