@@ -14,8 +14,10 @@ if (isProd) {
   await app.whenReady();
 
   const mainWindow = createWindow('main', {
-    width: 1000,
+    width: 1100,
     height: 600,
+    minHeight: 570,
+    minWidth: 430
   });
 
   if (isProd) {
@@ -23,7 +25,6 @@ if (isProd) {
   } else {
     const port = process.argv[2];
     await mainWindow.loadURL(`http://localhost:${port}/home`);
-    // mainWindow.webContents.openDevTools();
   }
   await mainWindow.webContents.on('did-fail-load', async () => {
     if (isProd) {
@@ -31,7 +32,6 @@ if (isProd) {
     } else {
       const port = process.argv[2];
       await mainWindow.loadURL(`http://localhost:${port}/home`);
-      // mainWindow.webContents.openDevTools();
     }
   });
 })();
