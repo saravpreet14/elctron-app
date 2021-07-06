@@ -1,6 +1,7 @@
 import Link from "../Link";
 import { makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
+import customStyles from './characterList.module.css';
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -55,7 +56,7 @@ export default function TitlebarGridList(props : {
               }
               style={{width: 'auto', height: 'auto'}}
             >
-              <GridListTile className={classes.gridTile} key={character.id}>
+              <GridListTile className={customStyles.gridTile} key={character.id}>
                 <img
                   width="300"
                   height="300"
