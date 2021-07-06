@@ -37,6 +37,7 @@ a {
 a {
   width: auto;
   height: auto;
+  cursor: default;
 }
 
 @media (max-width: 800px) {
