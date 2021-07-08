@@ -16,12 +16,11 @@ export default function Episodes(props) {
 
     const ids:number[] = Array.from({length: 41}, (_, i) => i + 1)
     const { loading, error, data, fetchMore } = useQuery(Episodes_data, {
-        variables: {
-            ids: ids,
-        },
-        errorPolicy: "ignore",
+    variables: {
+        ids: ids,
+    },
+    errorPolicy: "ignore",
     });
-
     function reload() {
         fetchMore({
           variables: {ids: ids},

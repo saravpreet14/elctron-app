@@ -10,6 +10,10 @@ import {
   InMemoryCache,
   ApolloProvider
 } from "@apollo/client";
+import axios from 'axios';
+import printReadings from '../lib/performance';
+
+const readingsDatabse = "https://ricky-and-morty-project-default-rtdb.asia-southeast1.firebasedatabase.app/ElectronApp";
 
 const client = new ApolloClient({
   uri: "https://rickandmortyapi.com/graphql/",
@@ -17,28 +21,10 @@ const client = new ApolloClient({
 });
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  switch (metric.name) {
-    case 'FCP':
-      console.log("FCP",metric);
-      break
-    case 'LCP':
-      // handle LCP results
-      console.log("LCP",metric);
-      break
-    case 'CLS':
-      // handle CLS results
-      console.log("CLS",metric);
-      break
-    case 'FID':
-      // handle FID results
-      console.log("FID",metric);
-      break
-    case 'TTFB':
-      // handle TTFB results
-      console.log("TTFB",metric);
-      break
-    default:
-      break
+  if (['FCP', 'LCP', 'CLS', 'FID', 'TTFB'].includes(metric.name)) {
+    console.log(metric.name, metric.value);
+    axios.post(`${readingsDatabse}/${metric.name}.json`, metric.value);
+    printReadings(readingsDatabse + '.json');
   }
 }
 

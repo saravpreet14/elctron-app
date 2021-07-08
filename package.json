@@ -12,6 +12,7 @@
     "build:mac": "nextron build --mac --x64"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "electron-serve": "^1.1.0",
     "electron-store": "^7.0.2",
     "web-vitals": "^2.1.0"

@@ -17,7 +17,7 @@ interface characterData {
 var isSearch:boolean = false;
 var static_filter:string = "";
 
-export default function Home(props:{imageSize:{width: number, height: number}}) {
+export default function Home(props:{imageSize:{width: number, height: number}, buttonSize:'small'|'medium'|'large'}) {
   const Characters_data = gql`
     query CharactersQuery($page: Int, $filter: FilterCharacter) {
       characters(page: $page, filter: $filter) {
@@ -102,7 +102,7 @@ export default function Home(props:{imageSize:{width: number, height: number}}) 
           <Button
             variant="contained"
             color="primary"
-            size="large"
+            size={props.buttonSize}
             onClick={() => {search(""); isSearch=false;}}
           >
             Back to all characters
@@ -115,7 +115,7 @@ export default function Home(props:{imageSize:{width: number, height: number}}) 
           <Button
             variant="contained"
             color="primary"
-            size="large"
+            size={props.buttonSize}
             onClick={() => loadMore(isSearch, my_filter)}
           >
             Load More

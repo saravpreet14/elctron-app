@@ -3,8 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 import customStyles from './characterList.module.css';
 
-
-
 export default function TitlebarGridList(props: {
   characters: {
     id: string;
