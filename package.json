@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "electron-serve": "^1.1.0",
-    "electron-store": "^7.0.2"
+    "electron-store": "^7.0.2",
+    "web-vitals": "^2.1.0"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.20",

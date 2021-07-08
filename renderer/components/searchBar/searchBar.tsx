@@ -1,5 +1,10 @@
-import { makeStyles, IconButton, TextField, TextFieldClassKey } from "@material-ui/core";
-import {useState} from 'react';
+import {
+  makeStyles,
+  IconButton,
+  TextField,
+  TextFieldClassKey,
+} from "@material-ui/core";
+import { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 
@@ -18,18 +23,20 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar(props : {
-    search: (event:React.FormEvent<HTMLFormElement>) => void;
-    value: string;
+export default function SearchBar(props: {
+  search: (event: React.FormEvent<HTMLFormElement>) => void,
+  value: string,
+  change: (string) => void
 }) {
-  console.log(props);
+  // console.log('search: ', props.value)
   const classes = styles();
 
-    const [value, setValue] = useState(props.value);
+  // const [value, setValue] = useState(props.value);
 
-    function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
-        setValue(event.target.value);
-    }
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    // setValue(event.target.value);
+    props.change(event.target.value)
+  }
 
   return (
     <div>
@@ -44,7 +51,7 @@ export default function SearchBar(props : {
           id="outlined-size-normal"
           variant="outlined"
           style={{ width: "20rem" }}
-          value={value}
+          value={props.value}
           onChange={handleChange}
         />
         <IconButton

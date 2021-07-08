@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from '../lib/theme';
-import type { AppProps } from 'next/app';
+import type { AppProps, NextWebVitalsMetric } from 'next/app';
 import "../styles/globals.css";
 import {
   ApolloClient,
@@ -15,6 +15,32 @@ const client = new ApolloClient({
   uri: "https://rickandmortyapi.com/graphql/",
   cache: new InMemoryCache(),
 });
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  switch (metric.name) {
+    case 'FCP':
+      console.log("FCP",metric);
+      break
+    case 'LCP':
+      // handle LCP results
+      console.log("LCP",metric);
+      break
+    case 'CLS':
+      // handle CLS results
+      console.log("CLS",metric);
+      break
+    case 'FID':
+      // handle FID results
+      console.log("FID",metric);
+      break
+    case 'TTFB':
+      // handle TTFB results
+      console.log("TTFB",metric);
+      break
+    default:
+      break
+  }
+}
 
 export default function(props: AppProps) {
   const { Component, pageProps } = props;

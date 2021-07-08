@@ -34,6 +34,14 @@ a {
   cursor: pointer;
 }
 
+.MuiGridListTileBar-title {
+  height: auto;
+}
+
+.MuiGridListTile-imgFullWidth {
+  width: auto;
+}
+
 a {
   width: auto;
   height: auto;

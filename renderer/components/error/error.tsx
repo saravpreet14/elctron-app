@@ -6,7 +6,7 @@ export default function error(props:{
   reload: () => void 
 }) {
   return (
-    <>
+    <div>
       <br />
       <br />
       <br />
@@ -14,6 +14,6 @@ export default function error(props:{
       <div style={{display: 'flex', justifyContent: 'center'}} >
         <Button variant="contained" color="primary" size="large" onClick={props.reload}>Retry</Button>
       </div>
-    </>
+    </div>
   );
 }

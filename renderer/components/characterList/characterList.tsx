@@ -1,43 +1,53 @@
-import Link from "../Link";
+import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 import customStyles from './characterList.module.css';
 
-const styles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    overflow: "hidden",
-    marginTop: "6vh",
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: "90vw",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  gridTile: {
-    margin: "1.5rem",
-    height: "300px",
-    borderRadius: "4%",
-    overflow: "hidden",
-  },
-  noData: {
-    textSlign: "center",
-    fontSize: "2rem",
-  }
-}));
 
-export default function TitlebarGridList(props : {
-    characters: {
-        id: string;
-        name: string;
-        image: string;
-    }[]
+
+export default function TitlebarGridList(props: {
+  characters: {
+    id: string;
+    name: string;
+    image: string;
+  }[];
+  imageSize: {
+    width: number;
+    height: number;
+  }
 }) {
+  const styles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      overflow: "hidden",
+      marginTop: props.imageSize.height === 300 ? "6vh" : "2vh",
+      backgroundColor: theme.palette.background.paper,
+      fontSize: props.imageSize.height === 300 ? '1rem' : '0.6rem',
+    },
+    gridList: {
+      // width: "90vw",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+    },
+    gridTile: {
+      margin: props.imageSize.height === 300 ? "1.5rem" : "0.5rem",
+      height: `${props.imageSize.height}px`,
+      borderRadius: "4%",
+      overflow: "hidden",
+      borderRight: '3px solid #fff',
+      borderBottom: '3px solid #fff',
+    },
+    noData: {
+      textSlign: "center",
+      fontSize: "2rem",
+    },
+  }));
   const classes = styles();
+  
+  const styleProps={style: { width: "auto", height: "auto" }};
 
   return (
     <div className={classes.root}>
@@ -46,26 +56,28 @@ export default function TitlebarGridList(props : {
       ) : (
         <GridList className={classes.gridList}>
           {props.characters.map((character) => (
-            <GridListTile className={customStyles.gridTile} key={character.id} style={{width: '300px', height: '300px', padding: '0'}}>
-              <Link
-                key={character.id}
-                href={
-                  "/character/" +
-                  character.name.replace(" ", "") +
-                  "-" +
-                  character.id
-                }
-                style={{cursor: 'pointer'}}
-              >
+            <Link
+              key={character.id}
+              href={
+                "/character/" +
+                character.name.replace(" ", "") +
+                "-" +
+                character.id
+              }
+              {...styleProps}
+              passHref
+            >
+              <GridListTile className={[customStyles.gridTile, classes.gridTile].join(' ')} key={character.id}>
                 <img
-                  width="300"
-                  height="300"
-                  src={`https://rickandmortyapi.com/api/character/avatar/${character.id}.jpeg`}
+                  width={props.imageSize.width}
+                  height={props.imageSize.height}
+                  src={character.image}
                   alt={character.name}
+                  style={{width: 'auto'}}
                 />
-                <GridListTileBar title={character.name} />
-              </Link>
-            </GridListTile>
+                <GridListTileBar style={{height: props.imageSize.height === 300 ? '48px' : 'auto'}} title={<div style={{fontSize: props.imageSize.height === 300 ? '1rem' : '0.6rem'}}>{character.name}</div>} />
+              </GridListTile>
+            </Link>
           ))}
         </GridList>
       )}

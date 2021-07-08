@@ -1,0 +1,26 @@
+.main {
+    font-size: 1.3rem;
+    height: 94vh;
+    overflow: scroll;
+    min-width: 170px;
+}
+
+.listElement {
+    cursor: pointer;
+    background-color: #fff;
+    margin: 1rem;
+    margin-left: 0;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.listElement:hover {
+    /* cursor: pointer; */
+    background-color: #3f51b5;
+    color: #fff;
+}
+
+.active {
+    background-color: #3f51b5;
+    color: #fff;
+}

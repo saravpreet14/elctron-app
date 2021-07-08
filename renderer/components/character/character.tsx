@@ -1,36 +1,34 @@
 import Head from "next/head";
-import Link from "../Link";
-import styles from "../../styles/MyCharacter.module.css";
+import Link from "next/link";
+import styles from "./MyCharacter.module.css";
 import { useQuery, gql } from "@apollo/client";
 import Spinner from "../../components/spinner/spinner";
 import { Button } from "@material-ui/core";
-import Error from '../error/error';
+import Error from "../error/error";
 
 interface dataFromApi {
-    data: {
-        charactersByIds: {
-            name: string;
-            id: string;
-            status: string;
-            type: string;
-            species: string;
-            gender: string;
-            origin: {
-                name: string;
-            };
-            location: {
-                name: string
-            };
-            image: string;
-        }[]
-    };
-    loading?: boolean;
-    error?: any;
+  data: {
+    charactersByIds: {
+      name: string;
+      id: string;
+      status: string;
+      type: string;
+      species: string;
+      gender: string;
+      origin: {
+        name: string;
+      };
+      location: {
+        name: string;
+      };
+      image: string;
+    }[];
+  };
+  loading?: boolean;
+  error?: any;
 }
 
-export default function MyCharacter(props: {
-    params: {id: string};
-}) {
+export default function MyCharacter(props: { params: { id: string } }) {
   const params = props.params;
   const id = params.id.split("-").slice(-1)[0];
 
@@ -68,7 +66,8 @@ export default function MyCharacter(props: {
   if (loading) return <Spinner />;
   if (error) return <Error reload={() => reload()}/>;
 
-  const { name, image, gender, location, origin, species, status } = data.charactersByIds[0];
+  const { name, image, gender, location, origin, species, status } =
+    data.charactersByIds[0];
   return (
     <div className={styles.container}>
       <Head>
@@ -106,7 +105,7 @@ export default function MyCharacter(props: {
         <br />
         <br />
 
-        <Link href="/home">
+        <Link passHref href="/home">
           <Button variant="contained" color="primary" size="large">
             <strong>Back</strong>
           </Button>
