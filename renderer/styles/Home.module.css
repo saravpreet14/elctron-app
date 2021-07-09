@@ -34,8 +34,16 @@
   grid-template-columns: 2fr 8fr;
 }
 
+.homeMain {
+  height: 95vh;
+  overflow: scroll;
+}
+
 @media (max-width: 1000px) {
   .partition {
     grid-template-columns: 1fr;
+  }
+  .homeMain {
+    height: 84vh;
   }
 }

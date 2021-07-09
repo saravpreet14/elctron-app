@@ -4,9 +4,10 @@
     overflow: scroll;
     /* max-width: 300px; */
     margin: 0;
-    margin-left: 5px;
+    padding-left: 5px;
     /* flex-grow: 5; */
     /* flex-shrink: 3; */
+    background-color: lightblue;
 }
 
 .listElement {
@@ -40,9 +41,15 @@
         overflow-x: scroll;
         display: flex;
         flex-direction: row;
+        /* margin-top: 1vh; */
     }
     .listElement {
         min-width: 30vw;
+        max-height: 10vh;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        /* max-width: 200px; */
         float: left;
     }
 }
