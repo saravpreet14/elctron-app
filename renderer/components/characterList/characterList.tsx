@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "../Link";
 import { makeStyles } from "@material-ui/core/styles";
 import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
 import customStyles from './characterList.module.css';
@@ -69,7 +69,7 @@ export default function TitlebarGridList(props: {
                 <img
                   width={props.imageSize.width}
                   height={props.imageSize.height}
-                  src={character.image}
+                  src={`https://rickandmortyapi.com/api/character/avatar/${character.id}.jpeg`}
                   alt={character.name}
                   style={{width: 'auto'}}
                 />

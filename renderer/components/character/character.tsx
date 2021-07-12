@@ -1,9 +1,8 @@
 import Head from "next/head";
-import Link from "next/link";
+import Link from "../Link";
 import styles from "./MyCharacter.module.css";
 import { useQuery, gql } from "@apollo/client";
-import Spinner from "../../components/spinner/spinner";
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import Error from "../error/error";
 
 interface dataFromApi {
@@ -63,7 +62,7 @@ export default function MyCharacter(props: { params: { id: string } }) {
       }
     }).catch(error => null);
   }
-  if (loading) return <Spinner />;
+  if (loading) return <div className={styles.spinner} ><CircularProgress /></div>;
   if (error) return <Error reload={() => reload()}/>;
 
   const { name, image, gender, location, origin, species, status } =

@@ -17,7 +17,7 @@ export default function navbar(props) {
       <CssBaseline />
       <AppBar>
         <Toolbar>
-          <h1
+          <span
             className={styles.siteName}
             onClick={() => {
               if(Router.pathname === "/home") Router.reload();
@@ -25,10 +25,10 @@ export default function navbar(props) {
             }}
           >
             Rick and Morty
-          </h1>
-          <h1 className={styles.authButton} onClick={() => auth ? logout().then(() => Router.push('/auth')) : Router.push('/auth')} >
+          </span>
+          <span className={styles.authButton} onClick={() => auth ? logout().then(() => Router.push('/auth')) : Router.push('/auth')} >
             {auth ? "Logout" : "Sign In"}
-          </h1>
+          </span>
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
