@@ -40,3 +40,20 @@ export async function logout() {
         localStorage.removeItem('user');
     }
 }
+
+export async function getUser() {
+    if(typeof window !== 'undefined') {
+        const rawData = localStorage.getItem('user');
+        if(!rawData) {
+            return false;
+        }
+        const userData:{username: string, password: string} = JSON.parse(rawData);
+        return userData.username;
+        // authenticate(userData.username, userData.password).then(auth => {
+        //     console.log(auth)
+        //     if(auth) {
+        //         return userData.username;
+        //     }
+        // })
+    }
+}

@@ -54,7 +54,7 @@
 @media (max-width: 1000px) {
   .partition {
     grid-template-columns: 1fr;
-    grid-template-rows: 10vh 1fr;
+    grid-template-rows: 85px 1fr;
   }
   .homeMain {
     height: 83vh;
