@@ -7,6 +7,11 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #fafafa;
+}
+
+body::backdrop {
+  background-color: #fafafa;
 }
 
 a {
@@ -46,6 +51,14 @@ a {
   width: auto;
   height: auto;
   cursor: default;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.MuiLink-underlineHover:hover {
+  text-decoration: none;
 }
 
 @media (max-width: 800px) {

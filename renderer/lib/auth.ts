@@ -5,23 +5,20 @@ import path from "path";
 // const rawData = fs.readFileSync(dataFilePath, "utf-8");
 // const authData = JSON.parse(rawData);
 
-const authData = [
-    { "username": "sprinklr@123", "password": "sprinklr@123" },
-    { "username": "sarav@123", "password": "sarav@123" },
-    { "username": "phani@123", "password": "phani@123" },
-    { "username": "aneree@123", "password": "aneree@123" },
-    { "username": "dhruv@123", "password": "dhruv@123" }
-  ]
+const authData = {
+    "sprinklr@123": "sprinklr@123",
+    "sarav@123": "sarav@123",
+    "phani@123": "phani@123",
+    "aneree@123": "aneree@123",
+    "dhruv@123": "dhruv@123",
+}
 
 export async function authenticate(username: string, password: string) { 
-    const user = await authData.filter(user => {
-        if(user.username === username && user.password === password && typeof window !== 'undefined') {
-            localStorage.setItem('user', JSON.stringify({username, password}));
-            return true;
-        }
-        else return false
-    });
-    return user.length > 0;
+    const valid = (authData[username] === password);
+    if(valid) {
+        localStorage.setItem('user', JSON.stringify({username, password}));
+    }
+    return valid;
 }
 
 export async function isAuth() {

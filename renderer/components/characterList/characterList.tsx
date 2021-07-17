@@ -1,84 +1,31 @@
 import Link from "../Link";
-import { makeStyles } from "@material-ui/core/styles";
-import { GridList, GridListTile, GridListTileBar } from "@material-ui/core";
-import customStyles from './characterList.module.css';
+import styles from "./characterList.module.css";
 
 export default function TitlebarGridList(props: {
   characters: {
     id: string;
     name: string;
-    image: string;
+    image?: string;
   }[];
-  imageSize: {
+  imageSize?: {
     width: number;
     height: number;
-  }
+  };
+  isWidget: boolean;
 }) {
-  const styles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      overflow: "hidden",
-      marginTop: props.imageSize.height === 300 ? "6vh" : "2vh",
-      backgroundColor: theme.palette.background.paper,
-      fontSize: props.imageSize.height === 300 ? '1rem' : '0.6rem',
-    },
-    gridList: {
-      // width: "90vw",
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-    },
-    gridTile: {
-      margin: props.imageSize.height === 300 ? "1.5rem" : "0.5rem",
-      height: `${props.imageSize.height}px`,
-      borderRadius: "4%",
-      overflow: "hidden",
-      borderRight: '3px solid #fff',
-      borderBottom: '3px solid #fff',
-    },
-    noData: {
-      textSlign: "center",
-      fontSize: "2rem",
-    },
-  }));
-  const classes = styles();
-  
-  const styleProps={style: { width: "auto", height: "auto" }};
-
-  return (
-    <div className={classes.root}>
-      {props.characters.length === 0 ? (
-        <h2 className={classes.noData}>Nothing to show</h2>
-      ) : (
-        <GridList className={classes.gridList}>
-          {props.characters.map((character) => (
-            <Link
-              key={character.id}
-              href={
-                "/character/" +
-                character.name.replace(" ", "") +
-                "-" +
-                character.id
-              }
-              {...styleProps}
-              passHref
-            >
-              <GridListTile className={[customStyles.gridTile, classes.gridTile].join(' ')} key={character.id}>
-                <img
-                  width={props.imageSize.width}
-                  height={props.imageSize.height}
-                  src={`https://rickandmortyapi.com/api/character/avatar/${character.id}.jpeg`}
-                  alt={character.name}
-                  style={{width: 'auto'}}
-                />
-                <GridListTileBar style={{height: props.imageSize.height === 300 ? '48px' : 'auto'}} title={<div style={{fontSize: props.imageSize.height === 300 ? '1rem' : '0.6rem'}}>{character.name}</div>} />
-              </GridListTile>
-            </Link>
-          ))}
-        </GridList>
-      )}
-    </div>
-  );
+    return (
+        <div className={styles.main} style={props.isWidget ? {marginLeft: '20px', marginRight: '20px'} : null} >
+            {/* <Link href='/characters'><a>Here</a></Link> */}
+            {props.characters.map(character => (
+                <Link href={`/character/${character.name.replace(' ', '')}-${character.id}`} key={character.id} passHref style={{textDecoration: 'none'}} >
+                    <div className={styles.card} key={character.id} style={props.isWidget ? {maxWidth: '150px', margin: '0.8rem'} : null} >
+                        <div className={styles.image} style={props.isWidget ? {width: '150px', height: '150px'} : null} >
+                            <img src={`https://rickandmortyapi.com/api/character/avatar/${character.id}.jpeg`} alt={character.name} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                        </div>
+                        <div className={styles.name} style={props.isWidget ? {fontSize: '0.8rem', padding: '5px'} : null} >{character.name}</div>
+                    </div>
+                </Link>
+            ))}
+        </div>
+    );
 }

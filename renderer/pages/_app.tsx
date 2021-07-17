@@ -23,8 +23,8 @@ const client = new ApolloClient({
 export function reportWebVitals(metric: NextWebVitalsMetric) {
   if (['FCP', 'LCP', 'CLS', 'FID', 'TTFB'].includes(metric.name)) {
     console.log(metric.name, metric.value);
-    axios.post(`${readingsDatabse}/${metric.name}.json`, metric.value);
-    printReadings(readingsDatabse + '.json');
+    // axios.post(`${readingsDatabse}/${metric.name}.json`, metric.value);
+    // printReadings(readingsDatabse + '.json');
   }
 }
 
