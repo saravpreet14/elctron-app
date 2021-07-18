@@ -1,26 +1,10 @@
-/* .gridTile {
-  margin: 1.5rem;
-  height: 300px;
-  border-radius: 4%;
-  overflow: hidden;
-  border-right: 3px solid #fff;
-  border-bottom: 3px solid #fff;
-  cursor: pointer;
-}
-
-.gridTile:hover {
-  border-color: black;
-} */
-
 .main {
   display: flex;
   margin: 10px 8%;
   margin-bottom: 0;
-  /* padding-top: 60px; */
-  /* top: 100px; */
-  margin-bottom: 0;
   flex-wrap: wrap;
   justify-content: center;
+  background-color: #fafafa;
 }
 
 .card {

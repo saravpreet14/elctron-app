@@ -55,6 +55,7 @@
   height: 100%;
   overflow-y: scroll;
   padding: 20px 8px;
+  background-color: #fafafa;
 }
 .frame {
   height: 100%;

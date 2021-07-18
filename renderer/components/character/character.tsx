@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from "../Link";
 import styles from "./MyCharacter.module.css";
 import { useQuery, gql } from "@apollo/client";
-import { IconButton,Button, CircularProgress } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { ArrowBackIosRounded } from "@material-ui/icons";
 import Error from "../error/error";
 import Skeleton from 'react-loading-skeleton';
@@ -70,18 +70,6 @@ export default function MyCharacter(props: { params: { id: string } }) {
     variables: { ids: id },
   });
   const { loading, error, data, fetchMore } = responseData;
-  if (loading) {
-    return (      
-      <div className={styles.root} >
-        <div className={styles.container1} style={{borderColor: 'white'}}>
-        <Skeleton count={1} height={570} width={350} />
-        </div>
-        <div className={styles.container2}>
-        <Skeleton count={1} height={900} width={330} />
-        </div>
-      </div>
-    )
-  ;}
   function reload() {
     fetchMore({
       variables: {ids: id},
@@ -90,19 +78,33 @@ export default function MyCharacter(props: { params: { id: string } }) {
       }
     }).catch(error => null);
   }
-  if (error) return <Error reload={() => reload()} />;
+  if (loading) {
+    return (      
+      <div className={styles.root} >
+        <div className={styles.container1} style={{borderColor: 'white',marginTop:"0px"}}>
+        <Skeleton count={1} height={570} width={330}  />
+        </div>
+        <div className={styles.container2}>
+        <Skeleton count={1} height={1200} width={330} />
+        </div>
+      </div>
+    )
+  ;}
+  if (error) return <Error reload={() => null} />;
   // console.log(data.charactersByIds[0]);
-
+  
   const { name, image, gender, location, origin, species, status,episode } =
     data.charactersByIds[0];
-  return (<div style={{height: '100%', overflow: 'scroll'}} >
+  return (
+    <div style={{height: '100%', overflow: 'scroll'}} >
       <div style={{position: 'sticky', top: '0', zIndex: 100}} >
       <IconButton onClick={() => window.history.back() } className={styles.iconBack} style={{backgroundColor: 'white', borderRadius: '2px', padding: '2px'}} aria-label="menu">
         <ArrowBackIosRounded />Back
       </IconButton>
       </div>
+
       <div className={styles.root} >
-        <div className={styles.container1}>
+        <div className={styles.container1} {...{style:{marginTop:"16px"}}}>
           <div className={styles.profile_image}>
             <div className={styles.image}>
               <img src={image} alt={name} width="300" height="300" />
@@ -133,9 +135,11 @@ export default function MyCharacter(props: { params: { id: string } }) {
         </div>
       </div>
       <div className={styles.container2}>
+        <div className={styles.new_heading} >
         <div className={styles.heading_box}>
           <h2 className={styles.heading}>FEATURED IN</h2>
           {/* <div className={styles.line}></div> */}
+        </div>
         </div>
         {episode.map((episode) => (
           <Link href={`/episode/${episode.id}`} passHref key={episode.id} >
@@ -147,5 +151,6 @@ export default function MyCharacter(props: { params: { id: string } }) {
         ))}
       </div>
     </div>
-  </div>);
+  </div>
+  );
 }

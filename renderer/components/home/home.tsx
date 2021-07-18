@@ -21,22 +21,11 @@ var nextPageToLoaded = 2;
 export default function Home(props:{imageSize:{width: number, height: number}, buttonSize:'small'|'medium'|'large', isWidget: boolean, placeholder:string}) {
   const trackScrolling = (event) => {
     var element = event.target;
-    // console.log(element.scrollHeight, element.scrollTop, element.clientHeight)
-    if (element.scrollHeight - element.scrollTop - 1580 <= element.clientHeight) {
+    if (element.scrollHeight - element.scrollTop - 800 <= element.clientHeight) {
       loadMore();
-      // console.log('scrolled')
     }
   }
-  useEffect(() => {
-    const page = document.querySelector('#scroll');
-    if(page) {
-      // if(page.clientHeight >= page.scrollHeight - 50) loadMore();
-      page.removeEventListener('scroll', trackScrolling);
-      page.addEventListener('scroll', trackScrolling);
-    }
-  })
-  // console.log(window)
-  
+
   const Characters_data = gql`
     query CharactersQuery($page: Int, $filter: FilterCharacter) {
       characters(page: $page, filter: $filter) {
@@ -53,12 +42,20 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
     }
   `;
 
-  const [my_filter, set_filter] = useState(static_filter);
+  var [my_filter, set_filter] = useState(static_filter);
+  var [lastSearch, set_lastSearch] = useState(false);
 
-  const { loading, error, data, fetchMore } = useQuery(Characters_data, {
+  var { loading, error, data, fetchMore } = useQuery(Characters_data, {
     variables: { page: 1, filter: {} },
     errorPolicy: "ignore",
   });
+
+  useEffect(() => {
+    const page = document.querySelector('#scroll');
+    if(data && !loading && !error && !lastSearch && page) {
+      page.addEventListener('scroll', trackScrolling, true);
+    }
+  }, [data])
 
   if (loading) {
     return (
@@ -66,8 +63,8 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
         <div className={styles.skeletonSearch} >
           <Skeleton count={1} height={50} />
         </div>
-        <div className={styles.skeletonList} style={props.isWidget ? {margin: '10px 20px'} : null} >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((t) => (
+        <div className={styles.skeletonList} style={props.isWidget ? {margin: '0 20px'} : null} >
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((t) => (
             <div className={styles.skeletonImage} style={props.isWidget ? {margin: '0.8rem'} : null} key={t} >
               <Skeleton height={props.isWidget ? 175 : 350} width={props.isWidget ? 150 : 300} />
             </div>
@@ -79,44 +76,46 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
   if (error) return <Error reload={() => search('')} />;
 
   function loadMore() {
-    document.querySelector('#scroll').removeEventListener('scroll', trackScrolling);
-    const nextPage = nextPageToLoaded ;//data.characters.info.next;
-    // console.log(data.characters.info)
+    set_lastSearch(false);
+    const nextPage = nextPageToLoaded ;
     if(nextPage === null) return;
+    document.querySelector('#scroll').removeEventListener('scroll', trackScrolling, true);
     var variables = { page: nextPage, filter: {} };
     if (isSearch) {
-      variables = { page: nextPage, filter: { name: my_filter } };
+      variables = { page: nextPage, filter: { name: static_filter } };
     }
 
     fetchMore({
       variables: variables,
 
       updateQuery: (prevResult:{characters: {results: characterData[]}}, { fetchMoreResult }) => {
-        fetchMoreResult.characters.results = [
-          ...prevResult.characters.results,
-          ...fetchMoreResult.characters.results,
-        ];
-        nextPageToLoaded = fetchMoreResult.characters.info.next;
+        if(fetchMoreResult.characters) {
+          nextPageToLoaded = fetchMoreResult.characters.info.next;
+          fetchMoreResult.characters.results = [
+            ...prevResult.characters.results,
+            ...fetchMoreResult.characters.results,
+          ];
+        }
         return fetchMoreResult;
       },
-    }).catch(error => null);
+    })
+    .catch(error => null);
   }
 
   function handleSearchChange(value: string) {
-    document.querySelector('#scroll').removeEventListener('scroll', trackScrolling);
     set_filter(value);
   }
 
   function search(query: string): void {
-    document.querySelector('#scroll').removeEventListener('scroll', trackScrolling);
+    set_lastSearch((static_filter === '' || query === ''));
     isSearch = query !== '';
     static_filter = query;
     set_filter(query);
     
     fetchMore({
-      variables: { page: null, filter: { name: query } },
+      variables: { page: 1, filter: { name: query } },
       updateQuery: (prevResult, { fetchMoreResult }) => {
-        nextPageToLoaded = fetchMoreResult.info.next;
+        if(fetchMoreResult.characters) nextPageToLoaded = fetchMoreResult.characters.info.next;
         return fetchMoreResult;
       },
     }).catch(error => null)
@@ -129,15 +128,12 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
   } = data.characters ? data.characters.info : { prev: null, next: null };
 
   return (
-    <div id="scroll" className={props.isWidget ? styles.homeWidget : styles.homeMain}
-    // style={{height: '95vh', overflow: 'scroll'}}
-    >
+    <div id="scroll" className={props.isWidget ? styles.homeWidget : styles.homeMain} >
       <Head>
         <title>Rick and Morty</title>
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <br /><br /> */}
       <SearchBar isWidget={props.isWidget} search={(event: React.FormEvent<HTMLDivElement>) => {event.preventDefault(); search(event.target[0].value)}} value={my_filter} change={(value:string) => handleSearchChange(value)} placeholder={props.placeholder}/>
         {isSearch ? (
           <div className={styles.loadMore}>
@@ -145,7 +141,7 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
             variant="contained"
             color="primary"
             size={props.buttonSize}
-            onClick={() => {search(""); isSearch=false;}}
+            onClick={() => search("")}
           >
             All characters
           </Button>
@@ -154,16 +150,6 @@ export default function Home(props:{imageSize:{width: number, height: number}, b
       <CharacterList characters={results} imageSize={props.imageSize} isWidget={props.isWidget}/>
       <div className={styles.loadMore}>
         {info.next ? (
-          // props.isWidget ? 
-          // <Button
-          //   variant="contained"
-          //   color="primary"
-          //   size={props.buttonSize}
-          //   onClick={() => loadMore()}
-          // >
-          //   Load More
-          // </Button> : 
-          // <CircularProgress />
           <div className={styles.skeletonList} style={props.isWidget ? {margin: '0 20px'} : null} >
             {[1, 2, 3, 4].map((t) => (
               <div className={styles.skeletonImage} style={props.isWidget ? {margin: '0.8rem'} : null} key={t} >

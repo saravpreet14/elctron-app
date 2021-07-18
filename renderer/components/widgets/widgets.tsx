@@ -1,9 +1,5 @@
 import styles from './widgets.module.css';
-import Link from 'next/link';
-import Image from 'next/image'
-import Home from '../home/home'
-import { IconButton, CircularProgress } from '@material-ui/core';
-import { ArrowBackIosRounded } from "@material-ui/icons";
+import Home from '../home/home';
 import { useQuery, gql } from "@apollo/client";
 import Error from '../error/error';
 import Forum from "../forum/forum";

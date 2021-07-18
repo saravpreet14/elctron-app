@@ -10,7 +10,7 @@ function print(data, name) {
         `Avg ${name} of`,
         result.length,
         "readings is",
-        (result.reduce((a, b) => a + b, 0) / result.length).toFixed(2)
+        (result.reduce((a, b) => a + b, 0) / result.length).toFixed(5)
     );
 }
 

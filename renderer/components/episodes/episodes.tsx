@@ -6,7 +6,7 @@ import Error from "../error/error";
 import { CircularProgress } from '@material-ui/core';
 import SearchBar from '../searchBar/searchBar';
 import { KeyboardReturnOutlined, RedoOutlined } from '@material-ui/icons';
-import Link from 'next/link';
+import Link from '../Link';
 import Skeleton from 'react-loading-skeleton';
 
 var isSearch:boolean = false;
